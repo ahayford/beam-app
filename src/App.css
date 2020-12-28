@@ -2,37 +2,251 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-image: linear-gradient(#e1eeed, #FFFFFF);
+  background-position: center;
+  position: relative;
+  height: 100vh;
+  color: #555;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+button {
+  background-color: #d2efd4;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+button:checked{
+  background-color: #e38ada;
 }
 
-.App-link {
-  color: #61dafb;
+.inputs-wrapper {
+  display:grid;
+  grid-template-columns: repeat(8,1fr);
+  grid-gap: 1em;
+  margin-top: 1em;
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.title-div {
+  display: grid;
+  grid-column: 1/8;
+  grid-row-start: 1;
+  background-color: #cfb7e0;
 }
+
+.support-div-title {
+  display: grid;
+  background: #e0d7b7;
+}
+
+.label-div {
+  grid-column: 1/2;
+}
+
+.dropdown-div {
+  grid-column: 2/2;
+}
+
+.design-inputs-outer-div {
+  text-align: center;
+  display: grid;
+  grid-column: 5/8;
+  grid-row-start: 1;
+  background-color: #0090ff;
+}
+
+.design-inputs-inner-div {
+  display: grid;
+  background-color: #cac189;
+}
+
+
+.units-outer-div {
+  text-align: center;
+  display: grid;
+  grid-column: 2/5;
+  grid-row-start: 1;
+  width: 100%;
+  background-color: #0090ff;
+}
+
+.units-inner-div {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  background-color: #0090ff;
+}
+
+/*Divs for the different support types*/
+.support-outer-div {
+  display: grid;
+  grid-column: 2/5;
+  grid-row-start: 2;
+}
+
+.support-inner-div {
+  display: grid;
+  gridTemplateColumns: repeat(3, 1fr);
+}
+
+.loads-outer-div {
+  display: grid;
+  grid-column: 5/8;
+  grid-row-start: 2;
+}
+
+.loads-inner-div {
+  display: grid;
+  gridTemplateColumns: repeat(4, 1fr);
+}
+
+
+.selected-loads {
+  display: grid;
+  background-color: #e38ada;
+}
+
+.selected-supports {
+  display: grid;
+  background-color: #43bfc3;
+}
+
+/*********************** Subdivs  */
+.pin-support-div {
+  background:Red;
+  grid-column: 1/1;
+}
+
+.roller-support-div {
+  background: #bdd9f3;
+  grid-column:2/3;
+}
+
+.fixed-support-div {
+  background: #00ff19;
+  grid-column: 3/3;
+}
+
+.point-load-div {
+  background:Red;
+  grid-column: 1/1;
+}
+
+.moment-load-div {
+  background: #0090ff;
+  grid-column:2/3;
+}
+
+.uniform-distributed-load-div {
+  background: #00ff19;
+  grid-column: 3/3;
+}
+
+
+.selected-supports {
+  /*!*visibility: hidden;*!*/
+  /*visibility: visible;*/
+  display: grid;
+  grid-column: 2/5;
+}
+
+
+.ss {
+  display: grid;
+  grid-column: 5/8;
+}
+
+.sketch-div {
+  display: grid;
+  grid-column: 2/8;
+  background-color: #90ca89;
+
+}
+
+.FBD-div {
+  display: grid;
+  background-color: #90ca89;
+}
+
+.selected-loads {
+  display: grid;
+  grid-column: 5/8;
+  /*gridTemplateColumns: repeat(3, 1fr);*/
+}
+
+.selected-loads-wrapper {
+  display: grid;
+  /*grid-column: 5/8;*/
+  grid-auto-rows: min-content;
+  gridTemplateColumns: repeat(3, 1fr);
+}
+
+.load-col1 {
+  display:grid;
+  /*border: 1px solid black;*/
+  grid-column: 1/1;
+}
+
+.load-col2 {
+  display:grid;
+  /*border: 1px solid black;*/
+  grid-column: 2/3;
+}
+
+.load-col3 {
+  display:grid;
+  /*border: 1px solid black;*/
+  grid-column: 3/3;
+}
+
+.load-row {
+  display:grid;
+  border: 1px solid black;
+  /*grid-column: 3/3;*/
+}
+
+
+
+/*********************** Pop-up settings  */
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 25%;
+  top: 10%;
+  width: 50%;
+  height: 50%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+
+.modal-content {
+  background-color: #d9c0c0;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+  color: #072dae;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.radio-button-sel {
+  text-align: left;
+}
+
+
+#container{
+  border: 5px solid red;
+}
+
