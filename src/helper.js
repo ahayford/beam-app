@@ -1,26 +1,23 @@
 export function onLoadSideChoose(loadLocationInput, length) {
+  if (loadLocationInput < 0) loadLocationInput = 0
+  if (loadLocationInput > length) loadLocationInput = length
 
-  if (loadLocationInput < 0) loadLocationInput = 0;
-  if (loadLocationInput > length) loadLocationInput = length;
-
-  let loadDistance;
+  let loadDistance
 
   if (loadLocationInput === 'LHS') {
-    loadDistance = 0;
+    loadDistance = 0
   } else if (loadLocationInput === 'RHS') {
-    loadDistance = length;
+    loadDistance = length
   } else {
     loadDistance = loadLocationInput
   }
 
-  return loadDistance;
+  return loadDistance
   // this.setState({loadOrMomentDistance: loadDistance})
 }
 
-
 export function setLoadDirection(directionInput) {
-
-  let loadDirection;
+  let loadDirection
 
   if (directionInput === 'up' || directionInput === 'CCW') {
     loadDirection = 'positive'
@@ -30,18 +27,22 @@ export function setLoadDirection(directionInput) {
     loadDirection = 'angle'
   }
 
-  return loadDirection;
+  return loadDirection
   // this.setState({loadDirection: loadDirection})
 }
 
-
-export function addNewPointOrMomentLoad(loadType, distance, magnitude,
-                                        direction, angle, loads) {
-
+export function addNewPointOrMomentLoad(
+  loadType,
+  distance,
+  magnitude,
+  direction,
+  angle,
+  loads
+) {
   //this.state.selectedLoadType, this.state.loads
 
   // checkWhetherLoadsExist (loads)
-  let generateLoad;
+  let generateLoad
 
   let terms = generateLoadTerms(loadType, loads)
 
@@ -51,14 +52,12 @@ export function addNewPointOrMomentLoad(loadType, distance, magnitude,
     magnitude: magnitude,
     loadDirection: direction,
     loadAngle: angle,
-    loadTerms: terms
+    loadTerms: terms,
   }
 
-  return generateLoad;
+  return generateLoad
   // this.setState({loads: [...this.state.loads, generateLoad]})
-
 }
-
 
 // export function checkWhetherLoadsExist (loads) {
 //   // checks if loads array is empty or does not exist
@@ -69,12 +68,11 @@ export function addNewPointOrMomentLoad(loadType, distance, magnitude,
 //   }
 // }
 
-export function defineDistrLoadMagnitude (parameter, magnitude) {
+export function defineDistrLoadMagnitude(parameter, magnitude) {
+  if (magnitude < 0) magnitude = 0
 
-  if (magnitude < 0) magnitude = 0;
-
-  let loadMagnitude = {};
-  loadMagnitude = {parameter: undefined};
+  let loadMagnitude = {}
+  loadMagnitude = { parameter: undefined }
 
   //set the start and end position
   // if (parameter === 'startMagnitude') {
@@ -86,103 +84,111 @@ export function defineDistrLoadMagnitude (parameter, magnitude) {
   //   this.setState({loadMagnitude: magnitude})
   // }
 
-  return loadMagnitude;
+  return loadMagnitude
   // this.setState({distrLoadStartMagnitude: magnitude})
   // this.setState({distrLoadEndMagnitude: magnitude})
   // this.setState({loadMagnitude: magnitude})
-
 }
 
-
 export function defineDistrLoadPosition(parameter, distance, value) {
-
-  if (value < 0) value = 0;
-  if (value > this.state.length) value = this.state.length;
-  let startPosition, endPosition;
+  if (value < 0) value = 0
+  if (value > this.state.length) value = this.state.length
+  let startPosition, endPosition
 
   //set the start position
   if (parameter === 'startPosition' && distance === 'atDist') {
-    startPosition = value;
+    startPosition = value
   } else if (parameter === 'startPosition' && distance === 'LHS') {
-    startPosition = 0;
+    startPosition = 0
   } else if (parameter === 'startPosition' && distance === 'RHS') {
-    startPosition = this.state.length;
+    startPosition = this.state.length
   }
 
   //set the end position
   if (parameter === 'endPosition' && distance === 'atDist') {
-    endPosition = value;
+    endPosition = value
   } else if (parameter === 'endPosition' && distance === 'LHS') {
-    endPosition = 0;
+    endPosition = 0
   } else if (parameter === 'endPosition' && distance === 'RHS') {
-    endPosition = this.state.length;
+    endPosition = this.state.length
   }
 
-  return {startPosition: startPosition,
-    endPosition: endPosition};
+  return {
+    startPosition: startPosition,
+    endPosition: endPosition,
+  }
   // this.setState({distrLoadStartPosition: this.state.length})
   // this.setState({distrLoadEndPosition: this.state.length})
-
 }
 
-export function addNewDistributedLoad(loadType,
-                                      startDistance,
-                                      endDistance,
-                                      startMagnitude,
-                                      endMagnitude,
-                                      loads) {
-
+export function addNewDistributedLoad(
+  loadType,
+  startDistance,
+  endDistance,
+  startMagnitude,
+  endMagnitude,
+  loads
+) {
   // checkWhetherLoadsExist (loads)
 
   let equivalentTriDistance, equivalentRectDistance
   let equivalentTriLoad, equivalentRectLoad
-  let loadTermArray;
-  let rectLoadResult, triLoadResult, trapezoidalLoadResult;
-  let distrLoadType;
+  let loadTermArray
+  let rectLoadResult, triLoadResult, trapezoidalLoadResult
+  let distrLoadType
 
   loadTermArray = generateLoadTerms(loadType, loads)
 
   //redefine the distributed load
 
-  if (startMagnitude === endMagnitude) { //for rectangular load
+  if (startMagnitude === endMagnitude) {
+    //for rectangular load
 
-    rectLoadResult = this.calculateEquivalentRectLoad(startDistance,
-        endDistance,
-        startMagnitude,
-        endMagnitude)
+    rectLoadResult = this.calculateEquivalentRectLoad(
+      startDistance,
+      endDistance,
+      startMagnitude,
+      endMagnitude
+    )
 
-    distrLoadType = rectLoadResult.distrLoadType;
-    equivalentTriDistance = null;
-    equivalentTriLoad = null;
-    equivalentRectDistance = rectLoadResult.equivalentDistance;
-    equivalentRectLoad = rectLoadResult.equivalentPointLoad;
+    distrLoadType = rectLoadResult.distrLoadType
+    equivalentTriDistance = null
+    equivalentTriLoad = null
+    equivalentRectDistance = rectLoadResult.equivalentDistance
+    equivalentRectLoad = rectLoadResult.equivalentPointLoad
+  } else if (startMagnitude === 0 || endMagnitude === 0) {
+    //for triangular load
 
+    triLoadResult = this.calculateEquivalentTriLoad(
+      startDistance,
+      endDistance,
+      startMagnitude,
+      endMagnitude
+    )
 
-  } else if (startMagnitude === 0 || endMagnitude === 0) { //for triangular load
-
-    triLoadResult = this.calculateEquivalentTriLoad(startDistance,
-        endDistance,
-        startMagnitude,
-        endMagnitude)
-
-    distrLoadType = rectLoadResult.distrLoadType;
+    distrLoadType = rectLoadResult.distrLoadType
     equivalentTriDistance = triLoadResult.equivalentDistance
     equivalentTriLoad = triLoadResult.equivalentDistance
-    equivalentRectDistance = null;
-    equivalentRectLoad = null;
+    equivalentRectDistance = null
+    equivalentRectLoad = null
+  } else {
+    //for trapezoidal load
 
-  } else { //for trapezoidal load
+    trapezoidalLoadResult = this.calculateTrapezoidalLoad(
+      startDistance,
+      endDistance,
+      startMagnitude,
+      endMagnitude
+    )
 
-    trapezoidalLoadResult = this.calculateTrapezoidalLoad(startDistance,
-        endDistance,
-        startMagnitude,
-        endMagnitude)
-
-    distrLoadType = trapezoidalLoadResult.distrLoadType;
-    equivalentTriDistance = trapezoidalLoadResult.triLoadPortion.equivalentDistance
+    distrLoadType = trapezoidalLoadResult.distrLoadType
+    equivalentTriDistance =
+      trapezoidalLoadResult.triLoadPortion.equivalentDistance
     equivalentTriLoad = trapezoidalLoadResult.triLoadPortion.equivalentDistance
-    equivalentRectDistance = trapezoidalLoadResult.triLoadPortion.equivalentDistance;
-    equivalentRectLoad = trapezoidalLoadResult.triLoadPortion.equivalentPointLoad;
+    equivalentRectDistance =
+      trapezoidalLoadResult.triLoadPortion.equivalentDistance
+    equivalentRectLoad =
+      trapezoidalLoadResult.triLoadPortion.equivalentPointLoad
   }
 
   let generateLoad = {
@@ -204,72 +210,87 @@ export function addNewDistributedLoad(loadType,
     loadTerms: loadTermArray,
   }
 
-  return generateLoad;
-
+  return generateLoad
 }
 
-export function calculateTrapezoidalLoad (startDistance,
-                            endDistance,
-                            startMagnitude,
-                            endMagnitude) {
-
-  let triangularPortion;
-  let triLoadPortionResult, rectLoadPortionResult;
+export function calculateTrapezoidalLoad(
+  startDistance,
+  endDistance,
+  startMagnitude,
+  endMagnitude
+) {
+  let triangularPortion
+  let triLoadPortionResult, rectLoadPortionResult
 
   if (startMagnitude > endMagnitude) {
+    triangularPortion = startMagnitude - endMagnitude
 
-    triangularPortion = startMagnitude - endMagnitude;
-
-    triLoadPortionResult = this.calculateEquivalentTriLoad(startDistance, endDistance, triangularPortion, 0);
-    rectLoadPortionResult = this.calculateEquivalentRectLoad(startDistance, endDistance, endMagnitude, endMagnitude);
-
+    triLoadPortionResult = this.calculateEquivalentTriLoad(
+      startDistance,
+      endDistance,
+      triangularPortion,
+      0
+    )
+    rectLoadPortionResult = this.calculateEquivalentRectLoad(
+      startDistance,
+      endDistance,
+      endMagnitude,
+      endMagnitude
+    )
   } else if (endMagnitude > startMagnitude) {
+    triangularPortion = endMagnitude - startMagnitude
 
-    triangularPortion = endMagnitude - startMagnitude;
-
-    triLoadPortionResult = this.calculateEquivalentTriLoad(startDistance, endDistance, 0, triangularPortion);
-    rectLoadPortionResult = this.calculateEquivalentRectLoad(startDistance, endDistance, startMagnitude, startMagnitude);
-
+    triLoadPortionResult = this.calculateEquivalentTriLoad(
+      startDistance,
+      endDistance,
+      0,
+      triangularPortion
+    )
+    rectLoadPortionResult = this.calculateEquivalentRectLoad(
+      startDistance,
+      endDistance,
+      startMagnitude,
+      startMagnitude
+    )
   }
 
   return {
     distrLoadType: 'trapezoidal',
     triLoadPortion: triLoadPortionResult,
-    rectLoadPortion: rectLoadPortionResult
+    rectLoadPortion: rectLoadPortionResult,
   }
-
-
 }
 
-export function calculateEquivalentRectLoad (startDistance,
-                               endDistance,
-                               startMagnitude,
-                               endMagnitude) {
-
-  let totalLoad = (endDistance - startDistance) * (startMagnitude);
-  let eqvDistance = 0.5 * (endDistance - startDistance) + startDistance;
+export function calculateEquivalentRectLoad(
+  startDistance,
+  endDistance,
+  startMagnitude,
+  endMagnitude
+) {
+  let totalLoad = (endDistance - startDistance) * startMagnitude
+  let eqvDistance = 0.5 * (endDistance - startDistance) + startDistance
 
   return {
     distrLoadType: 'rectangular',
     equivalentDistance: eqvDistance,
     equivalentPointLoad: totalLoad,
   }
-
 }
 
-export function calculateEquivalentTriLoad (startDistance,
-                              endDistance,
-                              startMagnitude,
-                              endMagnitude) {
-
-  let totalLoad, eqvDistance;
+export function calculateEquivalentTriLoad(
+  startDistance,
+  endDistance,
+  startMagnitude,
+  endMagnitude
+) {
+  let totalLoad, eqvDistance
 
   if (startMagnitude > endMagnitude) {
-    eqvDistance = (1 / 3) * (endDistance - startDistance) + startDistance;
-    totalLoad = (1 / 2) * ((endDistance - startDistance) * (startMagnitude));
+    eqvDistance = (1 / 3) * (endDistance - startDistance) + startDistance
+    totalLoad = (1 / 2) * ((endDistance - startDistance) * startMagnitude)
   } else {
-    eqvDistance = (2 / 3) * (endDistance - startDistance) + startDistance;
-    totalLoad = (1 / 2) * ((endDistance - startDistance) * (endMagnitude));
+    eqvDistance = (2 / 3) * (endDistance - startDistance) + startDistance
+    totalLoad = (1 / 2) * ((endDistance - startDistance) * endMagnitude)
   }
 
   return {
@@ -277,32 +298,30 @@ export function calculateEquivalentTriLoad (startDistance,
     equivalentDistance: eqvDistance,
     equivalentPointLoad: totalLoad,
   }
-
 }
 
-
 export function generateLoadTerms(loadType, loads) {
-  let point;
-  let x, y, M, equivY;
+  let point
+  let x, y, M, equivY
 
   if (loadType === 'pointLoad') {
-    point = loads.filter((load) => (load.type === 'pointLoad')).length + 1;
-    x = null;
-    y = 'P' + point + 'y';
-    M = null;
-    equivY = null;
+    point = loads.filter((load) => load.type === 'pointLoad').length + 1
+    x = null
+    y = 'P' + point + 'y'
+    M = null
+    equivY = null
   } else if (loadType === 'moment') {
-    point = loads.filter((load) => (load.type === 'moment')).length + 1;
-    x = null;
-    y = null;
-    M = 'M' + point;
-    equivY = null;
+    point = loads.filter((load) => load.type === 'moment').length + 1
+    x = null
+    y = null
+    M = 'M' + point
+    equivY = null
   } else {
-    point = loads.filter((load) => (load.type === 'distrLoad')).length + 1;
-    x = null;
-    y = 'q' + point + 'y';
-    M = null;
-    equivY = 'Q' + point + 'y';
+    point = loads.filter((load) => load.type === 'distrLoad').length + 1
+    x = null
+    y = 'q' + point + 'y'
+    M = null
+    equivY = 'Q' + point + 'y'
   }
 
   return {
@@ -310,72 +329,91 @@ export function generateLoadTerms(loadType, loads) {
     x: x,
     y: y,
     M: M,
-    equivY: equivY
+    equivY: equivY,
   }
 }
 
-
 export function showLoads(loads) {
-
   if (loads.length === 0) {
-    return null;
+    return null
   }
 
   return (
-      <div className="selected-loads-wrapper">
-
-
-        <div className={"load-col1"}>
-          {
-            loads
-                .filter((load) => (load.type === 'pointLoad'))
-                .map((load, index) => (
-                    <div key={index} className={"load-row"}>
-                      {load.type === 'pointLoad' ?
-                          <p>{load.type + ' ' + load.loadDirection + ' at x=' + load.distance + 'm '}
-                            <button onClick={() => this.editLoad(index)} type="button">{'edit'}</button>
-                            <button onClick={() => this.deleteLoad(index)} type="button">{'x'}</button>
-                          </p> : null}
-                    </div>
-                ))
-          }
-        </div>
-
-        <div className="load-col2">
-          {
-            loads
-                .filter((load) => (load.type === 'moment'))
-                .map((load, index) => (
-                    <div key={index} className={"load-row"}>
-                      {load.loadDirection === 'CCW' || load.loadDirection === 'CW' ?
-                          <p>{load.type + ' ' + load.loadDirection + ' at x=' + load.distance + 'm '}
-                            <button onClick={() => this.editLoad(index)} type="button">{'edit'}</button>
-                            <button onClick={() => this.deleteLoad(index)} type="button">{'x'}</button>
-                          </p> : null}
-                    </div>
-                ))
-          }
-        </div>
-
-        <div className="load-col3">
-          {loads
-              .filter((load) => (load.type === 'distrLoad')) //filter for distributed loads
-              .map((load, index) => (
-                  <div key={index} className={"load-row"}>
-                    {load.type === 'distrLoad' ?
-                        <p>{load.type + ' ' + load.distrLoadDirection + ' at x=' + load.distrLoadStartPosition + 'm '}
-                          <button onClick={() => this.editLoad(index)} type="button">{'edit'}</button>
-                          <button onClick={() => this.deleteLoad(index)} type="button">{'x'}</button>
-                        </p> : null}
-                  </div>
-              ))
-          }
-
-        </div>
-
-
+    <div className='selected-loads-wrapper'>
+      <div className={'load-col1'}>
+        {loads
+          .filter((load) => load.type === 'pointLoad')
+          .map((load, index) => (
+            <div key={index} className={'load-row'}>
+              {load.type === 'pointLoad' ? (
+                <p>
+                  {load.type +
+                    ' ' +
+                    load.loadDirection +
+                    ' at x=' +
+                    load.distance +
+                    'm '}
+                  <button onClick={() => this.editLoad(index)} type='button'>
+                    {'edit'}
+                  </button>
+                  <button onClick={() => this.deleteLoad(index)} type='button'>
+                    {'x'}
+                  </button>
+                </p>
+              ) : null}
+            </div>
+          ))}
       </div>
+
+      <div className='load-col2'>
+        {loads
+          .filter((load) => load.type === 'moment')
+          .map((load, index) => (
+            <div key={index} className={'load-row'}>
+              {load.loadDirection === 'CCW' || load.loadDirection === 'CW' ? (
+                <p>
+                  {load.type +
+                    ' ' +
+                    load.loadDirection +
+                    ' at x=' +
+                    load.distance +
+                    'm '}
+                  <button onClick={() => this.editLoad(index)} type='button'>
+                    {'edit'}
+                  </button>
+                  <button onClick={() => this.deleteLoad(index)} type='button'>
+                    {'x'}
+                  </button>
+                </p>
+              ) : null}
+            </div>
+          ))}
+      </div>
+
+      <div className='load-col3'>
+        {loads
+          .filter((load) => load.type === 'distrLoad') //filter for distributed loads
+          .map((load, index) => (
+            <div key={index} className={'load-row'}>
+              {load.type === 'distrLoad' ? (
+                <p>
+                  {load.type +
+                    ' ' +
+                    load.distrLoadDirection +
+                    ' at x=' +
+                    load.distrLoadStartPosition +
+                    'm '}
+                  <button onClick={() => this.editLoad(index)} type='button'>
+                    {'edit'}
+                  </button>
+                  <button onClick={() => this.deleteLoad(index)} type='button'>
+                    {'x'}
+                  </button>
+                </p>
+              ) : null}
+            </div>
+          ))}
+      </div>
+    </div>
   )
-
 }
-
